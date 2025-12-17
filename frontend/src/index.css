@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: #0b1220;
+    --panel: #111a2d;
+    --muted: #b2bdcf;
+    --border: rgba(255, 255, 255, 0.05);
+    --panel-strong: #0f1628;
+    --glow: 0 12px 48px -20px rgba(79, 99, 190, 0.4);
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(circle at 16% 18%, rgba(61, 159, 185, 0.12), transparent 28%),
+      radial-gradient(circle at 82% 4%, rgba(123, 141, 233, 0.12), transparent 26%),
+      linear-gradient(180deg, #0b1220 0%, #0d1524 60%, #0b1220 100%);
+    color: #e8ecf5;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif;
+    letter-spacing: -0.02em;
+    color: #f2f4fb;
+  }
+
+  p,
+  span,
+  label,
+  input,
+  textarea,
+  select,
+  button {
+    color: #e5e9f2;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(120deg, #7b8de9 0%, #3d9fb9 100%);
+    border-radius: 9999px;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-gradient-to-br from-[rgba(255,255,255,0.04)] to-[rgba(255,255,255,0.02)] backdrop-blur-xl border border-white/10 shadow-card rounded-2xl;
+  }
+
+  .pill {
+    @apply inline-flex items-center rounded-full px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wide bg-primary-500/15 text-primary-50 border border-white/5;
+  }
+
+  .input {
+    @apply w-full rounded-xl border border-white/10 bg-[rgba(255,255,255,0.03)] px-4 py-3 text-[15px] text-slate-100 placeholder:text-slate-500 focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-400/60 transition;
+  }
+
+  .table-shell {
+    @apply overflow-hidden rounded-2xl border border-white/10 shadow-card bg-[rgba(15,22,40,0.8)] backdrop-blur-xl;
+  }
+
+  .table-modern {
+    @apply w-full text-[15px] min-w-full;
+  }
+
+  .table-modern thead th {
+    @apply sticky top-0 z-10 bg-[rgba(17,26,45,0.9)] backdrop-blur-lg text-left text-xs font-semibold uppercase tracking-wider text-slate-400 border-b border-white/10 px-4 py-3;
+  }
+
+  .table-modern tbody tr {
+    @apply transition hover:bg-white/5 even:bg-[rgba(255,255,255,0.02)];
+  }
+
+  .table-modern td {
+    @apply px-4 py-3 border-b border-white/5 text-slate-100 align-middle;
+  }
+}

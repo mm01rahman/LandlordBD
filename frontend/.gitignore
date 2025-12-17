@@ -1,0 +1,5 @@
+package-lock.json
+.env
+README.md
+.idea
+node_modules
