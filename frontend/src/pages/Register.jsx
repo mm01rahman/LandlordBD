@@ -48,7 +48,6 @@ const Register = () => {
         <div className="text-center space-y-2">
           <p className="text-[12px] uppercase tracking-[0.22em] text-slate-400">Smart Rental</p>
           <h1 className="text-3xl font-semibold text-white">Create an account</h1>
-          <p className="text-sm text-slate-400">Comfortable, high-contrast form with helper cues for every field.</p>
         </div>
 
         <Card className="space-y-4">

@@ -46,7 +46,6 @@ const Login = () => {
         <div className="text-center space-y-2">
           <p className="text-[12px] uppercase tracking-[0.22em] text-slate-400">Smart Rental</p>
           <h1 className="text-3xl font-semibold text-white">Sign in to your console</h1>
-          <p className="text-sm text-slate-400">Comfort-first layout with clear labels and helper text.</p>
         </div>
 
         <Card className="space-y-4">
