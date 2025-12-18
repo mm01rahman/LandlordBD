@@ -56,10 +56,6 @@ const Buildings = () => {
           <h2 className="text-3xl font-semibold text-white leading-tight">Buildings</h2>
           <p className="text-sm text-slate-400">Readable overview of addresses, floors, and units.</p>
         </div>
-        <div className="flex flex-wrap gap-3">
-          <Button variant="ghost" size="sm">🔄 Sync PMS</Button>
-          <Button variant="outline" size="sm">📤 Export CSV</Button>
-        </div>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">
