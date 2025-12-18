@@ -22,5 +22,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Building::class);
     }
+    
+    public function tenants()
+    {
+        return $this->hasMany(Tenant::class);
+    }
 
 }
