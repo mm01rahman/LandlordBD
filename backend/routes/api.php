@@ -43,4 +43,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/agreements/{id}', [RentalAgreementController::class, 'show']);
     Route::put('/agreements/{id}', [RentalAgreementController::class, 'update']);
     Route::post('/agreements/{id}/end', [RentalAgreementController::class, 'end']);
+
+    Route::get('/payments', [PaymentController::class, 'index']);
+    Route::post('/payments', [PaymentController::class, 'store']);
+    Route::put('/payments/{id}', [PaymentController::class, 'update']);
+    Route::get('/outstanding', [PaymentController::class, 'outstanding']);
 });
