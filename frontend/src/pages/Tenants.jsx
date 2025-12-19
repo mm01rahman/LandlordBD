@@ -130,7 +130,7 @@ const Tenants = () => {
             </div>
 
             <Button className="w-full" disabled={savingTenant}>
-              {savingTenant ? 'Saving…' : '➕ Save tenant'}
+              {savingTenant ? 'Saving…' : 'Save tenant'}
             </Button>
           </form>
         </Card>
