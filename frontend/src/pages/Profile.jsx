@@ -1,9 +1,21 @@
 import { useEffect, useState } from 'react';
+import api from '../api/axiosInstance';
 import Layout from '../components/Layout';
 
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [form, setForm] = useState({ name: '', email: '', phone: '' });
+
+  useEffect(() => {
+    api.get('/me').then((res) => {
+      setUser(res.data);
+      setForm({
+        name: res.data.name,
+        email: res.data.email,
+        phone: res.data.phone || '',
+      });
+    });
+  }, []);
 
   return (
     <Layout>
