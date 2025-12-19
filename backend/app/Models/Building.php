@@ -20,4 +20,9 @@ class Building extends Model
         return $this->hasMany(Unit::class);
     }
 
+    public function agreements()
+    {
+        return $this->hasManyThrough(RentalAgreement::class, Unit::class, 'building_id', 'unit_id');
+    }
+
 }

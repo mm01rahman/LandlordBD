@@ -14,4 +14,19 @@ class Unit extends Model
     {
         return $this->belongsTo(Building::class);
     }
+
+    public function agreements()
+    {
+        return $this->hasMany(RentalAgreement::class);
+    }
+
+    public function currentAgreement()
+    {
+        return $this->hasOne(RentalAgreement::class)->whereNull('end_date_actual');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }
