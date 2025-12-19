@@ -1,114 +1,60 @@
-<div className="grid gap-4 lg:grid-cols-3">
-  <Card
-    title="Create Agreement"
-    description="Match tenant with unit"
-    className="lg:col-span-1"
-  >
-    <form className="space-y-3" onSubmit={async (e) => {
-      e.preventDefault();
-      await api.post('/agreements', form);
-      setForm({
-        tenant_id: '',
-        unit_id: '',
-        start_date: '',
-        end_date: '',
-        monthly_rent: '',
-        security_deposit: '',
-      });
-      load();
-    }}>
-      <div className="space-y-1">
-        <Label>Tenant</Label>
-        <Select
-          name="tenant_id"
-          value={form.tenant_id}
-          onChange={(e) => setForm({ ...form, tenant_id: e.target.value })}
-          required
-        >
-          <option value="">Select tenant</option>
-          {tenants.map((t) => (
-            <option key={t.id} value={t.id}>{t.name}</option>
-          ))}
-        </Select>
-      </div>
-
-      <div className="space-y-1">
-        <Label>Building</Label>
-        <Select
-          value={createBuildingId}
-          onChange={async (e) => {
-            const buildingId = e.target.value;
-            setCreateBuildingId(buildingId);
-            if (buildingId) {
-              const { data } = await api.get(`/buildings/${buildingId}/units`);
-              setUnits(data);
-            } else setUnits([]);
-            setForm(prev => ({ ...prev, unit_id: '' }));
-          }}
-        >
-          <option value="">Select building</option>
-          {buildings.map((b) => (
-            <option key={b.id} value={b.id}>{b.name}</option>
-          ))}
-        </Select>
-      </div>
-
-      <div className="space-y-1">
-        <Label>Unit</Label>
-        <Select
-          name="unit_id"
-          value={form.unit_id}
-          onChange={(e) => setForm({ ...form, unit_id: e.target.value })}
-          required
-        >
-          <option value="">Select unit</option>
-          {units.map((u) => (
-            <option key={u.id} value={u.id}>{u.unit_number}</option>
-          ))}
-        </Select>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3">
-        <div className="space-y-1">
-          <Label>Start date</Label>
-          <Input
-            type="date"
-            value={form.start_date}
-            onChange={(e) => setForm({ ...form, start_date: e.target.value })}
-            required
-          />
-        </div>
-        <div className="space-y-1">
-          <Label>End date</Label>
-          <Input
-            type="date"
-            value={form.end_date}
-            onChange={(e) => setForm({ ...form, end_date: e.target.value })}
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3">
-        <div className="space-y-1">
-          <Label>Monthly rent</Label>
-          <Input
-            placeholder="1200"
-            value={form.monthly_rent}
-            onChange={(e) => setForm({ ...form, monthly_rent: e.target.value })}
-            required
-          />
-        </div>
-        <div className="space-y-1">
-          <Label>Deposit</Label>
-          <Input
-            placeholder="500"
-            value={form.security_deposit}
-            onChange={(e) => setForm({ ...form, security_deposit: e.target.value })}
-          />
-        </div>
-      </div>
-
-      <Button type="submit" className="w-full">📝 Save agreement</Button>
-    </form>
-  </Card>
-</div>
+<Card
+  title="Agreements Pipeline"
+  description="Filter by status, tenant, or building"
+  className="lg:col-span-2"
+  actions={
+    <div className="flex flex-wrap gap-2">
+      <Select value={filters.status} onChange={(e) => setFilters({...filters, status: e.target.value})} className="w-36">
+        <option value="">All statuses</option>
+        <option value="active">Active</option>
+        <option value="ended">Ended</option>
+        <option value="upcoming">Upcoming</option>
+      </Select>
+      <Select value={filters.tenant_id} onChange={(e) => setFilters({...filters, tenant_id: e.target.value})} className="w-40">
+        <option value="">All tenants</option>
+        {tenants.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
+      </Select>
+      <Select value={filters.building_id} onChange={(e) => setFilters({...filters, building_id: e.target.value})} className="w-40">
+        <option value="">All buildings</option>
+        {buildings.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
+      </Select>
+    </div>
+  }
+>
+  <div className="table-shell overflow-x-auto">
+    <table className="table-modern">
+      <thead>
+        <tr>
+          <th>Tenant</th>
+          <th>Unit</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {agreements.map((a) => (
+          <tr key={a.id}>
+            <td className="text-white">{a.tenant?.name}</td>
+            <td className="text-slate-300">{a.unit?.building?.name} – {a.unit?.unit_number}</td>
+            <td className="text-slate-300">{a.start_date}</td>
+            <td className="text-slate-300">{a.end_date || a.end_date_actual || '—'}</td>
+            <td className="text-slate-200">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold">
+                {a.status === 'active' ? 'Active' : a.status === 'upcoming' ? 'Upcoming' : 'Ended'}
+              </span>
+            </td>
+            <td>
+              {a.status === 'active' && (
+                <Button variant="ghost" size="sm" onClick={() => api.post(`/agreements/${a.id}/end`).then(load)}>
+                  End
+                </Button>
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</Card>
