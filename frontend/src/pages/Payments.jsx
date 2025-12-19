@@ -40,7 +40,7 @@ const Payments = () => {
     };
     await api.post('/payments', payload);
     setForm({ agreement_id: '', billing_month: '', amount_due: '', amount_paid: '', payment_date: '', payment_method: '', notes: '' });
-    load();
+    load(); 
   };
 
   return (
