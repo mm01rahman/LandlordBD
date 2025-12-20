@@ -52,24 +52,20 @@ const Buildings = () => {
     <Layout>
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <p className="text-[12px] uppercase tracking-[0.2em] text-slate-400">Portfolio</p>
           <h2 className="text-3xl font-semibold text-white leading-tight">Buildings</h2>
-          <p className="text-sm text-slate-400">Readable overview of addresses, floors, and units.</p>
         </div>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">
-        <Card title="Add Building" description="Clear labels with helper text" className="lg:col-span-1">
+        <Card title="Add Building" className="lg:col-span-1">
           <form className="space-y-3" onSubmit={handleSubmit}>
             <div className="space-y-1">
               <Label>Name</Label>
-              <Input placeholder="Lunar Heights" name="name" value={form.name} onChange={handleChange} required />
-              <p className="text-[12px] text-slate-500">Visible to staff and tenants.</p>
+              <Input placeholder="MD Rahman" name="name" value={form.name} onChange={handleChange} required />
             </div>
             <div className="space-y-1">
               <Label>Address</Label>
-              <Input placeholder="123 Orbit Ave" name="address" value={form.address} onChange={handleChange} required />
-              <p className="text-[12px] text-slate-500">Street address for mail and agreements.</p>
+              <Input placeholder="70 Al Helal" name="address" value={form.address} onChange={handleChange} required />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
@@ -77,14 +73,14 @@ const Buildings = () => {
                 <Input name="city" value={form.city} onChange={handleChange} placeholder="City" />
               </div>
               <div className="space-y-1">
-                <Label>State</Label>
-                <Input name="state" value={form.state} onChange={handleChange} placeholder="State" />
+                <Label>District</Label>
+                <Input name="district" value={form.district} onChange={handleChange} placeholder="District" />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <Label>Zip</Label>
-                <Input name="zip_code" value={form.zip_code} onChange={handleChange} placeholder="0000" />
+                <Label>Post Code</Label>
+                <Input name="post_code" value={form.zip_code} onChange={handleChange} placeholder="3100" />
               </div>
               <div className="space-y-1">
                 <Label>Floors</Label>

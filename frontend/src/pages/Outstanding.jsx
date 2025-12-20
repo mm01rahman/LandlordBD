@@ -4,6 +4,7 @@ import Layout from '../components/Layout';
 import { Card } from '../components/ui/card';
 import { Input, Select } from '../components/ui/form';
 import { extractArray } from '../utils/normalize';
+import { formatMonth, money } from '../utils/formatters';
 
 const Outstanding = () => {
   const [rows, setRows] = useState([]);
@@ -44,9 +45,6 @@ const Outstanding = () => {
   return (
     <Layout>
       <div className="flex flex-col gap-2">
-        <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
-          Collections
-        </p>
         <h2 className="text-2xl font-semibold text-white">
           Outstanding Rent
         </h2>
@@ -119,16 +117,16 @@ const Outstanding = () => {
                     {r.unit?.unit_number}
                   </td>
                   <td className="text-slate-300">
-                    {r.billing_month}
+                    {formatMonth(r.billing_month)}
                   </td>
                   <td className="text-slate-100">
-                    ${r.amount_due}
+                    {money(r.amount_due)}
                   </td>
                   <td className="text-slate-100">
-                    ${r.amount_paid}
+                    {money(r.amount_paid)}
                   </td>
                   <td className="text-amber-200">
-                    ${r.amount_due - r.amount_paid}
+                    {money(r.amount_due - r.amount_paid)}
                   </td>
                   <td className="text-amber-300">{r.status}</td>
                 </tr>

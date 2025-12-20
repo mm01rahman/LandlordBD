@@ -4,6 +4,7 @@ import Layout from '../components/Layout';
 import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input, Label, Select, Textarea } from '../components/ui/form';
+import { formatMonth, money } from '../utils/formatters';
 
 const Payments = () => {
   const [payments, setPayments] = useState([]);
@@ -46,13 +47,11 @@ const Payments = () => {
   return (
     <Layout>
       <div className="flex flex-col gap-1">
-        <p className="text-[12px] uppercase tracking-[0.2em] text-slate-400">Finance</p>
         <h2 className="text-3xl font-semibold text-white leading-tight">Payments</h2>
-        <p className="text-sm text-slate-400">Comfort-first ledger with clear status labels and helper text.</p>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">
-        <Card title="Record Payment" description="Apply to agreement with guided fields" className="lg:col-span-1">
+        <Card title="Record Payment" className="lg:col-span-1">
           <form className="space-y-3" onSubmit={handleSubmit}>
             <div className="space-y-1">
               <Label>Agreement</Label>
@@ -69,7 +68,6 @@ const Payments = () => {
                   </option>
                 ))}
               </Select>
-              <p className="text-[12px] text-slate-500">Selecting an agreement auto-fills expected rent.</p>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
@@ -147,9 +145,9 @@ const Payments = () => {
                   <tr key={p.id}>
                     <td className="text-white">{p.tenant?.name}</td>
                     <td className="text-slate-300">{p.unit?.unit_number}</td>
-                    <td className="text-slate-300">{p.billing_month}</td>
-                    <td className="text-slate-100">${p.amount_due}</td>
-                    <td className="text-slate-100">${p.amount_paid}</td>
+                    <td className="text-slate-300">{formatMonth(p.billing_month)}</td>
+                    <td className="text-slate-100">${money(p.amount_due)}</td>
+                    <td className="text-slate-100">${money(p.amount_paid)}</td>
                     <td className="text-slate-200">
                       <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold">
                         {p.status === 'paid' ? '✅ Paid' : p.status === 'partial' ? '⏳ Partial' : '⚠️ Unpaid'}

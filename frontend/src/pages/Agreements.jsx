@@ -5,6 +5,7 @@ import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input, Label, Select } from '../components/ui/form';
 import { extractArray } from '../utils/normalize';
+import { formatMonth, money } from '../utils/formatters';
 
 const Agreements = () => {
   const [agreements, setAgreements] = useState([]);
@@ -55,13 +56,11 @@ const Agreements = () => {
   return (
     <Layout>
       <div className="flex flex-col gap-1">
-        <p className="text-[12px] uppercase tracking-[0.2em] text-slate-400">Leases</p>
         <h2 className="text-3xl font-semibold text-white leading-tight">Rental Agreements</h2>
-        <p className="text-sm text-slate-400">Guided creation with helper text and clear status badges.</p>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">
-        <Card title="Create Agreement" description="Match tenant + unit with reminders" className="lg:col-span-1">
+        <Card title="Create Agreement" className="lg:col-span-1">
           <form className="space-y-3" onSubmit={handleSubmit}>
             <div className="space-y-1">
               <Label>Tenant</Label>
@@ -78,7 +77,6 @@ const Agreements = () => {
                   </option>
                 ))}
               </Select>
-              <p className="text-[12px] text-slate-500">Tenant selection drives reminders and payments.</p>
             </div>
             <div className="space-y-1">
               <Label>Building</Label>
@@ -126,7 +124,6 @@ const Agreements = () => {
                   onChange={(e) => setForm({ ...form, monthly_rent: e.target.value })}
                   required
                 />
-                <p className="text-[12px] text-slate-500">Auto-shared with payments.</p>
               </div>
               <div className="space-y-1">
                 <Label>Deposit</Label>
@@ -180,6 +177,8 @@ const Agreements = () => {
                 <tr>
                   <th>Tenant</th>
                   <th>Unit</th>
+                  <th>Rent</th>
+                  <th>Security Deposit</th>
                   <th>Start</th>
                   <th>End</th>
                   <th>Status</th>
@@ -189,20 +188,42 @@ const Agreements = () => {
               <tbody>
                 {agreements.map((a) => (
                   <tr key={a.id}>
-                    <td className="text-white">{a.tenant?.name}</td>
+                    <td className="text-white">{a.tenant?.name ?? '—'}</td>
+
                     <td className="text-slate-300">
-                      {a.unit?.building?.name} - {a.unit?.unit_number}
+                      {a.unit ? `${a.unit.unit_number} • ${a.unit.building?.name ?? ''}` : '—'}
                     </td>
-                    <td className="text-slate-300">{a.start_date}</td>
-                    <td className="text-slate-300">{a.end_date || a.end_date_actual || '—'}</td>
+
+                    <td className="text-slate-300">{money(a.monthly_rent)}</td>
+
+                    <td className="text-slate-300">{money(a.security_deposit)}</td>
+
+                    <td className="text-slate-300">{formatMonth(a.start_date)}</td>
+
+                    <td className="text-slate-300">
+                      {a.end_date_actual ? formatMonth(a.end_date_actual) : (a.end_date ? formatMonth(a.end_date) : '—')}
+                    </td>
+
                     <td className="text-slate-200">
                       <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold">
-                        {a.status === 'active' ? '✅ Active' : a.status === 'upcoming' ? '🗓️ Upcoming' : '✔️ Ended'}
+                        {a.status === 'active'
+                          ? '✅ Active'
+                          : a.status === 'upcoming'
+                          ? '🗓️ Upcoming'
+                          : '✔️ Ended'}
                       </span>
                     </td>
+
                     <td>
                       {a.status === 'active' && (
-                        <Button variant="ghost" size="sm" onClick={() => endAgreement(a.id)}>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation(); // prevents any row click handlers in future
+                            endAgreement(a.id);
+                          }}
+                        >
                           🏁 End
                         </Button>
                       )}
