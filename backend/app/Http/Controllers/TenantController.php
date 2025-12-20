@@ -49,13 +49,13 @@ class TenantController extends Controller
             ->orderByDesc('billing_month')
             ->paginate($request->integer('payments_per_page', 10));
 
-        $documents = $tenant->documents()
-            ->orderByDesc('created_at')
-            ->paginate($request->integer('documents_per_page', 10));
+        //$documents = $tenant->documents()
+          //  ->orderByDesc('created_at')
+            //->paginate($request->integer('documents_per_page', 10));
 
         $tenant->setAttribute('payment_summary', $this->summarizePayments($tenant));
         $tenant->setAttribute('payments', $payments);
-        $tenant->setAttribute('documents', $documents);
+        //$tenant->setAttribute('documents', $documents);
 
         return response()->json($tenant);
     }
@@ -96,7 +96,12 @@ class TenantController extends Controller
             'total_due' => $totalDue,
             'total_paid' => $totalPaid,
             'outstanding' => max(0, $totalDue - $totalPaid),
-            'last_payment_date' => $latestPayment ? optional($latestPayment->payment_date ?? $latestPayment->billing_month)->toDateString() : null,
+            'last_payment_date' => $latestPayment
+                ? ($latestPayment->payment_date
+                    ? \Illuminate\Support\Carbon::parse($latestPayment->payment_date)->toDateString()
+                    : ($latestPayment->billing_month ? (string) $latestPayment->billing_month : null)
+                )
+            : null,
         ];
     }
 }
