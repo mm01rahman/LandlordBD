@@ -48,14 +48,8 @@ class TenantController extends Controller
         $payments = $tenant->payments()
             ->orderByDesc('billing_month')
             ->paginate($request->integer('payments_per_page', 10));
-
-        //$documents = $tenant->documents()
-          //  ->orderByDesc('created_at')
-            //->paginate($request->integer('documents_per_page', 10));
-
         $tenant->setAttribute('payment_summary', $this->summarizePayments($tenant));
         $tenant->setAttribute('payments', $payments);
-        //$tenant->setAttribute('documents', $documents);
 
         return response()->json($tenant);
     }
