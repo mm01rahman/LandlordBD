@@ -43,6 +43,12 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-ink text-slate-50 flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-lg space-y-6">
+        <Link
+  to="/"
+  className="mb-6 inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white"
+>
+  ← Back to Home
+</Link>
         <div className="text-center space-y-2">
           <p className="text-[12px] uppercase tracking-[0.22em] text-slate-400">Smart Rental</p>
           <h1 className="text-3xl font-semibold text-white">Sign in to your console</h1>
