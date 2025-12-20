@@ -1,11 +1,14 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BuildingController;
-use App\Http\Controllers\UnitController;
 use Illuminate\Support\Facades\Route;
 use Fruitcake\Cors\HandleCors;
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BuildingController;
+use App\Http\Controllers\UnitController;
+use App\Http\Controllers\TenantController;
+use App\Http\Controllers\RentalAgreementController;
+use App\Http\Controllers\PaymentController;
 
 // Respond to CORS preflight requests so the browser receives the expected
 // Access-Control-Allow-* headers even before authentication happens.
