@@ -10,6 +10,7 @@ use App\Http\Controllers\TenantController;
 use App\Http\Controllers\RentalAgreementController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\WorkspaceSettingsController;
 
 // Respond to CORS preflight requests so the browser receives the expected
 // Access-Control-Allow-* headers even before authentication happens.
@@ -54,4 +55,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/outstanding', [PaymentController::class, 'outstanding']);
 
     Route::get('/dashboard/summary', [DashboardController::class, 'summary']);
+
+    Route::get('/settings/workspace', [WorkspaceSettingsController::class, 'show']);
+    Route::put('/settings/workspace', [WorkspaceSettingsController::class, 'update']);
+
 });
