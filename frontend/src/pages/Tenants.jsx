@@ -4,13 +4,16 @@ import Layout from '../components/Layout';
 import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input, Label, Textarea } from '../components/ui/form';
+import { formatMonth, money } from '../utils/formatters';
 
 const Tenants = () => {
   const [tenants, setTenants] = useState([]);
+  const [selectedId, setSelectedId] = useState(null);
   const [selected, setSelected] = useState(null);
   const [form, setForm] = useState({
     name: '',
     phone: '',
+    whatsapp : '',
     email: '',
     address: '',
   });
@@ -21,15 +24,19 @@ const Tenants = () => {
   const [loadingTenants, setLoadingTenants] = useState(false);
   const [loadingSelection, setLoadingSelection] = useState(false);
 
-  const load = () => {
-    setLoadingTenants(true);
-    setError('');
-    return api
-      .get('/tenants')
-      .then((res) => setTenants(res.data))
-      .catch(() => setError('Unable to load tenants. Please try again.'))
-      .finally(() => setLoadingTenants(false));
-  };
+const load = () => {
+  setLoadingTenants(true);
+  setError('');
+  return api
+    .get('/tenants')
+    .then((res) => setTenants(res.data?.data ?? []))
+    .catch((err) => {
+      console.error(err?.response?.status, err?.response?.data);
+      setError('Unable to load tenants. Please try again.');
+    })
+    .finally(() => setLoadingTenants(false));
+};
+
 
   useEffect(() => {
     load();
@@ -50,10 +57,10 @@ const Tenants = () => {
       return;
     }
 
-    setSavingTenant(true);
+   setSavingTenant(true);
     try {
       await api.post('/tenants', form);
-      setForm({ name: '', phone: '', email: '', address: '' });
+      setForm({ name: '', phone: '', whatsapp : '', email: '', address: '' });
       setSuccess('Tenant saved successfully.');
       await load();
     } catch {
@@ -64,25 +71,31 @@ const Tenants = () => {
   };
 
   const viewTenant = (id) => {
+    // toggle behavior
+    if (selectedId === id) {
+      setSelectedId(null);
+      setSelected(null);
+      return;
+    }
+
+    setSelectedId(id);
     setLoadingSelection(true);
     setError('');
     api
       .get(`/tenants/${id}`)
       .then((res) => setSelected(res.data))
-      .catch(() => setError('Unable to load tenant details.'))
+      .catch(() => {
+        setError('Unable to load tenant details.');
+        setSelectedId(null);
+        setSelected(null);
+      })
       .finally(() => setLoadingSelection(false));
   };
 
   return (
     <Layout>
       <div className="flex flex-col gap-1">
-        <p className="text-[12px] uppercase tracking-[0.2em] text-slate-400">
-          People
-        </p>
         <h2 className="text-3xl font-semibold text-white">Tenants</h2>
-        <p className="text-sm text-slate-400">
-          Directory with contact, agreements, and payments.
-        </p>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">
@@ -106,6 +119,16 @@ const Tenants = () => {
               <Input
                 name="phone"
                 value={form.phone}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div>
+              <Label>Whatsapp</Label>
+              <Input
+                name="whatsapp"
+                value={form.whatsapp}
                 onChange={handleChange}
                 required
               />
@@ -153,12 +176,24 @@ const Tenants = () => {
                 </tr>
               ) : tenants.length ? (
                 tenants.map((t) => (
-                  <tr key={t.id} onClick={() => viewTenant(t.id)}>
-                    <td>{t.name}</td>
+                  <tr
+                    key={t.id}
+                    onClick={() => viewTenant(t.id)}
+                    className={`cursor-pointer transition ${
+                      selectedId === t.id ? 'bg-slate-800' : 'hover:bg-slate-800/40'
+                    }`}
+                  >
+                    <td className="relative pl-4">
+                      {selectedId === t.id && (
+                        <span className="absolute left-0 top-0 h-full w-1 bg-emerald-500" />
+                      )}
+                      {t.name}
+                    </td>
                     <td>{t.phone}</td>
                     <td>{t.agreements_count}</td>
                   </tr>
                 ))
+
               ) : (
                 <tr>
                   <td colSpan="3" className="text-center">
@@ -174,15 +209,49 @@ const Tenants = () => {
       {selected && (
         <div className="grid gap-4 lg:grid-cols-2 mt-4">
           <Card title="Agreements">
-            {loadingSelection && <p>Loading...</p>}
-            {(selected.agreements || []).map((a) => (
-              <div key={a.id}>
-                <p>{a.unit?.unit_number}</p>
-                <p className="text-xs">
-                  {a.status} • ${a.monthly_rent}
-                </p>
-              </div>
-            ))}
+            {loadingSelection && (
+              <p className="text-sm text-slate-400 animate-pulse">Loading agreements…</p>
+            )}
+
+            {(selected.agreements || []).length === 0 && !loadingSelection && (
+              <p className="text-sm text-slate-500">No agreements found.</p>
+            )}
+
+            <div className="space-y-3">
+              {(selected.agreements || []).map((a) => (
+                <div
+                  key={a.id}
+                  className="rounded-lg border border-white/10 bg-white/5 px-4 py-3 transition hover:bg-white/10"
+                >
+                  <div className="flex items-center justify-between">
+                    <p className="font-semibold text-white">
+                      Unit {a.unit?.unit_number ?? '—'}
+                    </p>
+
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-semibold
+                        ${
+                          a.status === 'active'
+                            ? 'bg-emerald-500/15 text-emerald-400'
+                            : a.status === 'upcoming'
+                            ? 'bg-blue-500/15 text-blue-400'
+                            : 'bg-slate-500/15 text-slate-300'
+                        }`}
+                    >
+                      {a.status.toUpperCase()}
+                    </span>
+                  </div>
+
+                  <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-slate-300">
+                    <span>💰 {money(a.monthly_rent)}</span>
+                    {a.start_date && <span>📅 Start: {formatMonth(a.start_date)}</span>}
+                    {a.end_date_actual && (
+                      <span>🏁 Ended: {formatMonth(a.end_date_actual)}</span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
           </Card>
 
           <Card title="Payments">
@@ -196,11 +265,11 @@ const Tenants = () => {
                 </tr>
               </thead>
               <tbody>
-                {(selected.payments || []).map((p) => (
+                {(selected?.payments?.data ?? []).map((p) => (
                   <tr key={p.id}>
-                    <td>{p.billing_month}</td>
-                    <td>${p.amount_due}</td>
-                    <td>${p.amount_paid}</td>
+                    <td>{formatMonth(p.billing_month)}</td>
+                    <td>{money(p.amount_due)}</td>
+                    <td>{money(p.amount_paid)}</td>
                     <td>{p.status}</td>
                   </tr>
                 ))}
