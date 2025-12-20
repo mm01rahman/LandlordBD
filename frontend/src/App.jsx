@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
+
+import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -18,40 +20,49 @@ const App = () => (
   <AuthProvider>
     <BrowserRouter>
       <Routes>
+
+        {/* Public */}
+        <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Register />} />
+
+        {/* Protected */}
         <Route
-          path="/"
-          element={(
+          path="/dashboard"
+          element={
             <ProtectedRoute>
               <Dashboard />
             </ProtectedRoute>
-          )}
+          }
         />
+
         <Route
           path="/buildings"
-          element={(
+          element={
             <ProtectedRoute>
               <Buildings />
             </ProtectedRoute>
-          )}
+          }
         />
+
         <Route
           path="/buildings/:buildingId/units"
-          element={(
+          element={
             <ProtectedRoute>
               <Units />
             </ProtectedRoute>
-          )}
+          }
         />
+
         <Route
           path="/tenants"
-          element={(
+          element={
             <ProtectedRoute>
               <Tenants />
             </ProtectedRoute>
-          )}
+          }
         />
+
         <Route
           path="/agreements"
           element={(
@@ -62,27 +73,29 @@ const App = () => (
         />
         <Route
           path="/payments"
-          element={(
+          element={
             <ProtectedRoute>
               <Payments />
             </ProtectedRoute>
-          )}
+          }
         />
+
         <Route
           path="/outstanding"
-          element={(
+          element={
             <ProtectedRoute>
               <Outstanding />
             </ProtectedRoute>
-          )}
+          }
         />
+
         <Route
           path="/profile"
-          element={(
+          element={
             <ProtectedRoute>
               <Profile />
             </ProtectedRoute>
-          )}
+          }
         />
         <Route
           path="/settings"
