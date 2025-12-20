@@ -9,6 +9,7 @@ use App\Http\Controllers\UnitController;
 use App\Http\Controllers\TenantController;
 use App\Http\Controllers\RentalAgreementController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\DashboardController;
 
 // Respond to CORS preflight requests so the browser receives the expected
 // Access-Control-Allow-* headers even before authentication happens.
@@ -51,4 +52,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/payments', [PaymentController::class, 'store']);
     Route::put('/payments/{id}', [PaymentController::class, 'update']);
     Route::get('/outstanding', [PaymentController::class, 'outstanding']);
+
+    Route::get('/dashboard/summary', [DashboardController::class, 'summary']);
 });
