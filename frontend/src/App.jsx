@@ -7,6 +7,7 @@ import Register from './pages/Register';
 import Buildings from './pages/Buildings';
 import Units from './pages/Units';
 import Tenants from './pages/Tenants';
+import Agreements from './pages/Agreements';
 import Payments from './pages/Payments';
 import Outstanding from './pages/Outstanding';
 import Profile from './pages/Profile';
@@ -47,6 +48,14 @@ const App = () => (
           element={(
             <ProtectedRoute>
               <Tenants />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/agreements"
+          element={(
+            <ProtectedRoute>
+              <Agreements />
             </ProtectedRoute>
           )}
         />
