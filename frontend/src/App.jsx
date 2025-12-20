@@ -6,6 +6,10 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Buildings from './pages/Buildings';
 import Units from './pages/Units';
+import Tenants from './pages/Tenants';
+import Payments from './pages/Payments';
+import Outstanding from './pages/Outstanding';
+import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
 
 const App = () => (
@@ -35,6 +39,38 @@ const App = () => (
           element={(
             <ProtectedRoute>
               <Units />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/tenants"
+          element={(
+            <ProtectedRoute>
+              <Tenants />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/payments"
+          element={(
+            <ProtectedRoute>
+              <Payments />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/outstanding"
+          element={(
+            <ProtectedRoute>
+              <Outstanding />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/profile"
+          element={(
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           )}
         />

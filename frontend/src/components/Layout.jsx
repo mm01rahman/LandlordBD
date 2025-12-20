@@ -7,6 +7,10 @@ const navLinks = [
   { to: '/', label: 'Dashboard', icon: '⏱️' },
   { to: '/buildings', label: 'Buildings', icon: '🏢' },
   { to: '/tenants', label: 'Tenants', icon: '👥' },
+  { to: '/agreements', label: 'Agreements', icon: '📑' },
+  { to: '/payments', label: 'Payments', icon: '💸' },
+  { to: '/outstanding', label: 'Outstanding', icon: '⚡' },
+  { to: '/profile', label: 'Profile', icon: '🧑‍💼' },
 ];
 
 const SidebarLink = ({ to, label, icon, onClick, active }) => (
