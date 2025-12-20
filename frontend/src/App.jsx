@@ -12,6 +12,7 @@ import Payments from './pages/Payments';
 import Outstanding from './pages/Outstanding';
 import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
+import Settings from './pages/Settings';
 
 const App = () => (
   <AuthProvider>
@@ -80,6 +81,14 @@ const App = () => (
           element={(
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/settings"
+          element={(
+            <ProtectedRoute>
+              <Settings />
             </ProtectedRoute>
           )}
         />

@@ -11,6 +11,7 @@ const navLinks = [
   { to: '/payments', label: 'Payments', icon: '💸' },
   { to: '/outstanding', label: 'Outstanding', icon: '⚡' },
   { to: '/profile', label: 'Profile', icon: '🧑‍💼' },
+  { to: '/settings', label: 'Settings', icon: '⚙️' },
 ];
 
 const SidebarLink = ({ to, label, icon, onClick, active }) => (
@@ -66,6 +67,15 @@ const Layout = ({ children }) => {
     }
   };
 
+  const handleAddTenant = () => {
+    setOpen(false);
+    navigate('/tenants');
+  };
+  const handleRecordPayment = () => {
+    setOpen(false);
+    navigate('/payments');
+  };
+
   return (
     <div className="min-h-screen bg-ink text-slate-50 flex" aria-live="polite">
       <aside
@@ -78,8 +88,9 @@ const Layout = ({ children }) => {
       >
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
           <div className="space-y-1">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-400">Smart Rental</p>
-            <h1 className="text-xl font-semibold text-white">Income Console</h1>
+            <h1 className="text-xl font-bold tracking-wide">
+                Landlord<span className="text-primary-500">BD</span>
+            </h1>
           </div>
           <Button
             ref={closeButtonRef}
@@ -127,12 +138,14 @@ const Layout = ({ children }) => {
               >
                 ☰
               </Button>
-              <div className="space-y-0.5">
-                <p className="text-[11px] uppercase tracking-[0.2em] text-slate-400">Control center</p>
-                <p className="text-xl font-semibold text-white leading-tight">Smart Rental Property OS</p>
-              </div>
             </div>
             <div className="flex items-center gap-3">
+              <Button variant="subtle" size="sm" onClick={handleAddTenant}>
+                ➕ Add Tenant
+              </Button>
+              <Button variant="outline" size="sm" onClick={handleRecordPayment}>
+                💳 Record Payment
+              </Button>
               <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2">
                 <div className="h-9 w-9 rounded-full bg-primary-600/30 grid place-items-center text-sm font-semibold text-white">
                   {user?.name?.slice(0, 2) || 'SR'}
