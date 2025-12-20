@@ -28,7 +28,7 @@ const Login = () => {
     setSubmitting(true);
     try {
       await login(email, password);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err) {
       setError(
         actionState.error && actionState.type === 'login'

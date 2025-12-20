@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { Button } from './ui/button';
 
 const navLinks = [
-  { to: '/', label: 'Dashboard', icon: '⏱️' },
+  { to: '/dashboard', label: 'Dashboard', icon: '⏱️' },
   { to: '/buildings', label: 'Buildings', icon: '🏢' },
   { to: '/tenants', label: 'Tenants', icon: '👥' },
   { to: '/agreements', label: 'Agreements', icon: '📑' },
