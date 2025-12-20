@@ -1,18 +1,42 @@
-export const formatMonth = (value) => {
+// src/utils/formatters.js
+
+// ---- Workspace helpers ----
+export const getWorkspaceCurrency = () =>
+  localStorage.getItem('workspace_currency') || 'BDT';
+
+export const getWorkspaceTimezone = () =>
+  localStorage.getItem('workspace_timezone') || 'Asia/Dhaka';
+
+// ---- Date formatting ----
+export const formatMonth = (value, mode = 'month') => {
   if (!value) return '';
-  const d = new Date(value);
-  return d.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    date: 'numeric',
-  });
+
+  // prevent timezone shift for YYYY-MM-DD strings
+  const safeValue =
+    typeof value === 'string' && value.length === 10
+      ? `${value}T00:00:00`
+      : value;
+
+  const d = new Date(safeValue);
+  if (Number.isNaN(d.getTime())) return String(value);
+
+  const options =
+    mode === 'date'
+      ? { year: 'numeric', month: 'short', day: '2-digit' }
+      : { year: 'numeric', month: 'short' };
+
+  return d.toLocaleDateString('en-GB', options);
 };
 
+// ---- Money formatting ----
 export const money = (v) => {
-  if (v === null || v === undefined || isNaN(v)) return '৳0.00';
-  return Number(v).toLocaleString('en-BD', {
+  const n = Number(v);
+  const currency = getWorkspaceCurrency();
+
+  return (Number.isFinite(n) ? n : 0).toLocaleString('en-BD', {
     style: 'currency',
-    currency: 'BDT',
+    currency,
     minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   });
 };
