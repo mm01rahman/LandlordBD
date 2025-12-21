@@ -6,20 +6,17 @@ const apiBase = configuredApiUrl;
 const apiHost = apiBase.endsWith('/api') ? apiBase : `${apiBase}/api`;
 
 const client = axios.create({
-  baseURL: apiHost,
-  withCredentials: true,
-  headers: {
-    'X-Requested-With': 'XMLHttpRequest',
-  },
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  withCredentials: false, // 🔒 NO cookies
 });
 
-// Attach bearer token (if present) to every request so protected routes authenticate correctly
 client.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
+
 
 export default client;

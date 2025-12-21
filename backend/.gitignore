@@ -1,5 +1,5 @@
 .idea
-config
+config/sanctum.php
 resources
 composer.lock
 .env
