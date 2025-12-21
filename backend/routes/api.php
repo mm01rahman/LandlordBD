@@ -18,6 +18,13 @@ Route::options('/{any}', function () {
     return response()->noContent();
 })->where('any', '.*');
 
+Route::get('/', function () {
+    return response()->json([
+        'name' => 'LandlordBD API',
+        'status' => 'ok',
+    ]);
+});
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/health', fn () => response()->json(['ok' => true]));
