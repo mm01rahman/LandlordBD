@@ -10,7 +10,7 @@ RUN composer install --no-dev --no-interaction --no-progress --optimize-autoload
 COPY . .
 RUN composer dump-autoload --optimize
 
-FROM php:8.2-apache
+FROM php:8.4-apache
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends libpq-dev git zip unzip \
