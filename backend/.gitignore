@@ -1,7 +1,5 @@
 .idea
-bootstrap
 config
-public
 resources
 composer.lock
 .env
