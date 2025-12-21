@@ -31,7 +31,8 @@ WORKDIR /var/www/html
 COPY --from=vendor /app /var/www/html
 
 # Fix permissions for storage and bootstrap/cache
-RUN chown -R www-data:www-data storage bootstrap/cache \
+RUN mkdir -p storage bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache \
     && find storage bootstrap/cache -type d -exec chmod 775 {} \; \
     && find storage bootstrap/cache -type f -exec chmod 664 {} \;
 
